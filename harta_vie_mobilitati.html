@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Harta Vie a Mobilității · Erasmus+ KA120 · Brăila → Italia</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:   #0a1628;
+    --deep:   #06101e;
+    --gold:   #e8b84b;
+    --gold2:  #f5d080;
+    --green:  #2d6a4f;
+    --teal:   #1a7a6e;
+    --red:    #c0392b;
+    --cream:  #f5f0e8;
+    --white:  #ffffff;
+    --glass:  rgba(255,255,255,0.06);
+    --border: rgba(232,184,75,0.2);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--deep);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  /* ── STARFIELD BACKGROUND ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 10%, rgba(26,122,110,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 80%, rgba(232,184,75,0.08) 0%, transparent 50%),
+      radial-gradient(ellipse 40% 60% at 60% 30%, rgba(192,57,43,0.06) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ══ HERO ══ */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 40px;
+    text-align: center;
+    z-index: 1;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(232,184,75,0.12);
+    border: 1px solid var(--border);
+    border-radius: 30px;
+    padding: 6px 18px;
+    font-size: 10px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 2px;
+    color: var(--gold);
+    margin-bottom: 32px;
+    animation: fadeUp 0.8s ease both;
+  }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(42px, 7vw, 96px);
+    font-weight: 300;
+    line-height: 1.05;
+    letter-spacing: -1px;
+    margin-bottom: 12px;
+    animation: fadeUp 0.8s 0.15s ease both;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .hero-sub {
+    font-size: clamp(14px, 2vw, 18px);
+    font-weight: 300;
+    opacity: 0.55;
+    letter-spacing: 0.5px;
+    margin-bottom: 48px;
+    animation: fadeUp 0.8s 0.25s ease both;
+  }
+
+  /* Route pill */
+  .route-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 50px;
+    overflow: hidden;
+    margin-bottom: 60px;
+    animation: fadeUp 0.8s 0.35s ease both;
+  }
+  .route-city {
+    padding: 10px 22px;
+    font-size: 13px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 1.5px;
+  }
+  .route-city.ro { color: #f4d03f; }
+  .route-city.it { color: #e74c3c; }
+  .route-arrow {
+    padding: 10px 16px;
+    font-size: 18px;
+    opacity: 0.3;
+    border-left: 1px solid rgba(255,255,255,0.08);
+    border-right: 1px solid rgba(255,255,255,0.08);
+  }
+  .route-dates {
+    padding: 10px 18px;
+    font-size: 10px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 1px;
+    opacity: 0.4;
+  }
+
+  /* Stats row */
+  .hero-stats {
+    display: flex;
+    gap: 40px;
+    justify-content: center;
+    flex-wrap: wrap;
+    animation: fadeUp 0.8s 0.45s ease both;
+    margin-bottom: 48px;
+  }
+  .stat-item { text-align: center; }
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 48px;
+    font-weight: 300;
+    color: var(--gold);
+    line-height: 1;
+    display: block;
+  }
+  .stat-label {
+    font-size: 10px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 2px;
+    opacity: 0.4;
+    margin-top: 4px;
+  }
+
+  .scroll-cta {
+    animation: fadeUp 0.8s 0.55s ease both;
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 2px;
+    opacity: 0.35;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .scroll-cta::after {
+    content: '';
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.3), transparent);
+    animation: pulse 2s ease infinite;
+  }
+
+  /* ══ MAP SECTION ══ */
+  .map-section {
+    position: relative;
+    z-index: 1;
+    padding: 80px 40px;
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--gold);
+    opacity: 0.7;
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 300;
+    margin-bottom: 60px;
+    line-height: 1.15;
+  }
+
+  /* Map container */
+  .map-container {
+    position: relative;
+    background: rgba(255,255,255,0.025);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    overflow: hidden;
+    padding: 0;
+  }
+
+  /* SVG Map */
+  #journeyMap {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* ══ JOURNEY DAYS TIMELINE ══ */
+  .timeline-section {
+    position: relative;
+    z-index: 1;
+    padding: 80px 40px;
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+
+  .timeline-track {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .timeline-track::before {
+    content: '';
+    position: absolute;
+    left: 39px;
+    top: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, var(--border) 10%, var(--border) 90%, transparent);
+  }
+
+  .day-entry {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 32px;
+    padding: 32px 0;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+  .day-entry:last-child { border-bottom: none; }
+  .day-entry.visible { opacity: 1; transform: translateX(0); }
+
+  .day-pin {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding-top: 4px;
+  }
+  .pin-circle {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    border: 2px solid var(--gold);
+    background: var(--deep);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--gold);
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
+  }
+  .pin-circle::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    border: 1px solid rgba(232,184,75,0.2);
+    animation: pinPulse 3s ease infinite;
+  }
+  .pin-day-label {
+    font-size: 8px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 1px;
+    opacity: 0.35;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .day-content {
+    padding-bottom: 8px;
+  }
+
+  .day-header {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+
+  .day-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 400;
+    line-height: 1.1;
+  }
+
+  .day-date {
+    font-size: 10px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 1.5px;
+    color: var(--gold);
+    opacity: 0.6;
+  }
+
+  .day-activities {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .activity-tag {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.65);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .day-desc {
+    font-size: 14px;
+    line-height: 1.7;
+    opacity: 0.65;
+    font-weight: 300;
+    max-width: 700px;
+  }
+
+  /* ══ COMPARISON SECTION ══ */
+  .compare-section {
+    position: relative;
+    z-index: 1;
+    padding: 80px 40px;
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 60px 1fr;
+    gap: 0;
+    align-items: stretch;
+  }
+
+  .compare-col {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    padding: 36px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .compare-col.ro { border-color: rgba(244,208,63,0.2); }
+  .compare-col.it { border-color: rgba(231,76,60,0.2); }
+
+  .compare-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 20px 0;
+  }
+
+  .vs-line {
+    width: 1px;
+    flex: 1;
+    background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.1), transparent);
+  }
+
+  .vs-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.3);
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+  }
+
+  .col-flag {
+    font-size: 28px;
+    margin-bottom: 4px;
+  }
+
+  .col-country {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 400;
+    margin-bottom: 20px;
+  }
+
+  .compare-item {
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding-top: 16px;
+  }
+
+  .compare-item-label {
+    font-size: 9px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 2px;
+    opacity: 0.4;
+    margin-bottom: 6px;
+  }
+
+  .compare-item-val {
+    font-size: 13px;
+    line-height: 1.55;
+    opacity: 0.75;
+    font-weight: 300;
+  }
+
+  /* ══ COMPETENCIES RADAR ══ */
+  .competencies-section {
+    position: relative;
+    z-index: 1;
+    padding: 80px 40px;
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+
+  .comp-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+
+  .radar-wrap {
+    aspect-ratio: 1;
+    max-width: 380px;
+    margin: 0 auto;
+  }
+
+  #radarChart {
+    width: 100%;
+    height: 100%;
+  }
+
+  .comp-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .comp-item {
+    opacity: 0;
+    transform: translateX(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .comp-item.visible { opacity: 1; transform: translateX(0); }
+
+  .comp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  .comp-name {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+  }
+
+  .comp-score {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    color: var(--gold);
+  }
+
+  .comp-bar-bg {
+    height: 3px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .comp-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    background: linear-gradient(to right, var(--teal), var(--gold));
+    width: 0;
+    transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .comp-desc {
+    font-size: 12px;
+    opacity: 0.45;
+    margin-top: 6px;
+    font-weight: 300;
+  }
+
+  /* ══ IMPACT SECTION ══ */
+  .impact-section {
+    position: relative;
+    z-index: 1;
+    padding: 80px 40px;
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+
+  .impact-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .impact-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 20px;
+    padding: 32px 28px;
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .impact-card.visible { opacity: 1; transform: translateY(0); }
+
+  .impact-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+  .impact-card.gold::before  { background: linear-gradient(to right, transparent, var(--gold), transparent); }
+  .impact-card.teal::before  { background: linear-gradient(to right, transparent, var(--teal), transparent); }
+  .impact-card.red::before   { background: linear-gradient(to right, transparent, var(--red), transparent); }
+
+  .impact-icon { font-size: 32px; margin-bottom: 16px; }
+  .impact-audience {
+    font-size: 9px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 2px;
+    opacity: 0.4;
+    margin-bottom: 10px;
+  }
+  .impact-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 400;
+    margin-bottom: 12px;
+    line-height: 1.2;
+  }
+  .impact-text {
+    font-size: 13px;
+    line-height: 1.65;
+    opacity: 0.6;
+    font-weight: 300;
+  }
+
+  .impact-metric {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+  .metric-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .metric-label { font-size: 11px; opacity: 0.4; }
+
+  /* ══ QUOTES SECTION ══ */
+  .quotes-section {
+    position: relative;
+    z-index: 1;
+    padding: 80px 40px;
+    max-width: 1300px;
+    margin: 0 auto;
+    overflow: hidden;
+  }
+
+  .quotes-track {
+    display: flex;
+    gap: 24px;
+    animation: scrollQuotes 30s linear infinite;
+    width: max-content;
+  }
+
+  .quotes-track:hover { animation-play-state: paused; }
+
+  .quote-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px 32px;
+    width: 340px;
+    flex-shrink: 0;
+  }
+
+  .quote-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-style: italic;
+    line-height: 1.6;
+    opacity: 0.85;
+    margin-bottom: 16px;
+  }
+
+  .quote-author {
+    font-size: 10px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 1.5px;
+    color: var(--gold);
+    opacity: 0.7;
+  }
+
+  /* ══ FOOTER ══ */
+  .footer {
+    position: relative;
+    z-index: 1;
+    padding: 60px 40px;
+    text-align: center;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .footer-logos {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 32px;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+  }
+
+  .footer-logo-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .footer-logo-flag { font-size: 28px; }
+  .footer-logo-name {
+    font-size: 9px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 1.5px;
+    opacity: 0.4;
+    text-align: center;
+    max-width: 120px;
+  }
+
+  .footer-sep {
+    width: 1px; height: 40px;
+    background: rgba(255,255,255,0.08);
+  }
+
+  .footer-program {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    opacity: 0.3;
+    letter-spacing: 1px;
+  }
+
+  /* ══ ANIMATIONS ══ */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pinPulse {
+    0%, 100% { opacity: 0.2; transform: scale(1); }
+    50%       { opacity: 0.5; transform: scale(1.15); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.3; }
+    50%       { opacity: 0.7; }
+  }
+
+  @keyframes drawPath {
+    from { stroke-dashoffset: 1200; }
+    to   { stroke-dashoffset: 0; }
+  }
+
+  @keyframes scrollQuotes {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  @keyframes dotAppear {
+    from { opacity: 0; transform: scale(0); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .compare-grid { grid-template-columns: 1fr; }
+    .compare-center { flex-direction: row; }
+    .vs-line { height: 1px; width: 100%; }
+    .vs-badge { writing-mode: horizontal-tb; }
+    .comp-layout { grid-template-columns: 1fr; }
+    .impact-grid { grid-template-columns: 1fr; }
+    .day-entry { grid-template-columns: 60px 1fr; gap: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-badge">🇪🇺 ERASMUS+ · KA120-SCH · JOB SHADOWING</div>
+  <h1 class="hero-title">Harta Vie a<br><em>Mobilității</em></h1>
+  <p class="hero-sub">O călătorie educațională între două sisteme, două culturi, două viziuni</p>
+
+  <div class="route-pill">
+    <div class="route-city ro">BRĂILA</div>
+    <div class="route-arrow">→</div>
+    <div class="route-dates">22–28 FEB 2026</div>
+    <div class="route-arrow">→</div>
+    <div class="route-city it">MONTENERO DI BISACCIA</div>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat-item">
+      <span class="stat-num">3</span>
+      <span class="stat-label">PROFESOARE</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">5</span>
+      <span class="stat-label">ZILE</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">4</span>
+      <span class="stat-label">ȚĂRI PARTENERE</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">∞</span>
+      <span class="stat-label">EXPERIENȚE</span>
+    </div>
+  </div>
+
+  <div class="scroll-cta">DESCOPERĂ CĂLĂTORIA</div>
+</section>
+
+<!-- ══ MAP ══ -->
+<section class="map-section">
+  <div class="section-label">01 · TRASEUL</div>
+  <h2 class="section-title">De la Dunăre<br>la Marea Adriatică</h2>
+
+  <div class="map-container">
+    <svg id="journeyMap" viewBox="0 0 900 420" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="bgGrad" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#0e1e35"/>
+          <stop offset="100%" stop-color="#06101e"/>
+        </radialGradient>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="3" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#e8b84b" opacity="0.7"/>
+        </marker>
+      </defs>
+
+      <!-- Background -->
+      <rect width="900" height="420" fill="url(#bgGrad)"/>
+
+      <!-- Grid lines (subtle) -->
+      <g stroke="rgba(255,255,255,0.04)" stroke-width="0.5">
+        <line x1="0" y1="105" x2="900" y2="105"/>
+        <line x1="0" y1="210" x2="900" y2="210"/>
+        <line x1="0" y1="315" x2="900" y2="315"/>
+        <line x1="225" y1="0" x2="225" y2="420"/>
+        <line x1="450" y1="0" x2="450" y2="420"/>
+        <line x1="675" y1="0" x2="675" y2="420"/>
+      </g>
+
+      <!-- Stylized land masses -->
+      <!-- Romania outline (simplified) -->
+      <path d="M 480 60 Q 560 40 620 80 Q 660 100 650 150 Q 640 190 590 200 Q 540 210 510 190 Q 470 175 460 140 Q 450 100 480 60Z"
+            fill="rgba(244,208,63,0.06)" stroke="rgba(244,208,63,0.15)" stroke-width="1"/>
+
+      <!-- Italy outline (simplified boot shape) -->
+      <path d="M 180 120 Q 200 90 230 100 Q 260 110 270 150 Q 280 190 260 230 Q 245 265 230 280 Q 210 300 195 285 Q 175 265 170 230 Q 155 190 165 155 Q 170 135 180 120Z"
+            fill="rgba(231,76,60,0.06)" stroke="rgba(231,76,60,0.15)" stroke-width="1"/>
+
+      <!-- Adriatic sea label -->
+      <text x="340" y="270" font-family="Georgia, serif" font-size="9" fill="rgba(255,255,255,0.12)" letter-spacing="3" text-anchor="middle">MAREA ADRIATICĂ</text>
+
+      <!-- Journey path — animated -->
+      <path id="journeyPath"
+            d="M 555 155 Q 500 200 430 230 Q 370 255 320 240 Q 280 228 250 210 Q 225 195 210 175"
+            fill="none"
+            stroke="#e8b84b"
+            stroke-width="2"
+            stroke-dasharray="1200"
+            stroke-dashoffset="1200"
+            stroke-linecap="round"
+            marker-end="url(#arrowhead)"
+            filter="url(#glow)"
+            style="animation: drawPath 2.5s 0.5s ease forwards;"/>
+
+      <!-- Brăila point -->
+      <circle cx="555" cy="155" r="8" fill="#e8b84b" opacity="0.9" filter="url(#glow)"/>
+      <circle cx="555" cy="155" r="14" fill="none" stroke="#e8b84b" stroke-width="1" opacity="0.35">
+        <animate attributeName="r" values="14;22;14" dur="3s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.35;0;0.35" dur="3s" repeatCount="indefinite"/>
+      </circle>
+      <text x="555" y="138" font-family="'DM Mono', monospace" font-size="10" fill="#f4d03f" letter-spacing="1" text-anchor="middle">BRĂILA 🇷🇴</text>
+
+      <!-- Montenero point -->
+      <circle cx="210" cy="175" r="8" fill="#e74c3c" opacity="0.9" filter="url(#glow)"
+              style="animation: dotAppear 0.5s 3s ease both; opacity: 0;">
+        <animate attributeName="opacity" values="0;0.9" begin="3s" dur="0.5s" fill="freeze"/>
+      </circle>
+      <circle cx="210" cy="175" r="14" fill="none" stroke="#e74c3c" stroke-width="1" opacity="0">
+        <animate attributeName="opacity" values="0;0.35;0" begin="3s" dur="3s" repeatCount="indefinite"/>
+        <animate attributeName="r" values="14;22;14" begin="3s" dur="3s" repeatCount="indefinite"/>
+      </circle>
+      <text x="210" y="158" font-family="'DM Mono', monospace" font-size="9" fill="#e74c3c" letter-spacing="1" text-anchor="middle" opacity="0">
+        MONTENERO 🇮🇹
+        <animate attributeName="opacity" values="0;1" begin="3s" dur="0.5s" fill="freeze"/>
+      </text>
+
+      <!-- School label -->
+      <text x="210" y="200" font-family="Georgia, serif" font-size="8" fill="rgba(231,76,60,0.5)" text-anchor="middle" opacity="0">
+        Istituto "Sammy Basso"
+        <animate attributeName="opacity" values="0;0.7" begin="3.5s" dur="0.5s" fill="freeze"/>
+      </text>
+      <text x="555" y="175" font-family="Georgia, serif" font-size="8" fill="rgba(244,208,63,0.5)" text-anchor="middle">Șc. "Al. I. Cuza"</text>
+
+      <!-- Distance label on path -->
+      <text x="385" y="215" font-family="'DM Mono', monospace" font-size="9" fill="rgba(232,184,75,0.4)" text-anchor="middle" transform="rotate(-8 385 215)">≈ 1.850 km</text>
+
+      <!-- Partner countries -->
+      <g transform="translate(700, 50)">
+        <text font-family="'DM Mono', monospace" font-size="8" fill="rgba(255,255,255,0.25)" letter-spacing="2">PARTENERI</text>
+        <text y="22" font-size="14">🇷🇴</text>
+        <text x="22" y="22" font-size="14">🇮🇹</text>
+        <text x="44" y="22" font-size="14">🇫🇷</text>
+        <text x="66" y="22" font-size="14">🇪🇸</text>
+      </g>
+    </svg>
+  </div>
+</section>
+
+<!-- ══ TIMELINE ══ -->
+<section class="timeline-section">
+  <div class="section-label">02 · ACTIVITĂȚILE ZILNICE</div>
+  <h2 class="section-title">Cinci zile,<br>cinci lecții de viață</h2>
+
+  <div class="timeline-track">
+
+    <div class="day-entry" data-delay="0">
+      <div class="day-pin">
+        <div class="pin-circle">L</div>
+        <div class="pin-day-label">LUNI</div>
+      </div>
+      <div class="day-content">
+        <div class="day-header">
+          <div class="day-title">Ziua Sosirii & Prima Întâlnire</div>
+          <div class="day-date">23 FEB 2026</div>
+        </div>
+        <div class="day-activities">
+          <span class="activity-tag">🤝 Primire oficială</span>
+          <span class="activity-tag">🏫 Tur școală</span>
+          <span class="activity-tag">🎶 Orchestra școlii</span>
+          <span class="activity-tag">🍕 Masă tradițională</span>
+        </div>
+        <p class="day-desc">Prima zi a adus surpriza orchestrei școlii — elevi interpretând muzică clasică cu o grație și o dedicare uimitoare. Turul școlii a revelat un mediu educațional cald, creativ și profund european.</p>
+      </div>
+    </div>
+
+    <div class="day-entry" data-delay="1">
+      <div class="day-pin">
+        <div class="pin-circle">M</div>
+        <div class="pin-day-label">MARȚI</div>
+      </div>
+      <div class="day-content">
+        <div class="day-header">
+          <div class="day-title">Metode STEAM în Acțiune</div>
+          <div class="day-date">24 FEB 2026</div>
+        </div>
+        <div class="day-activities">
+          <span class="activity-tag">🔬 Laborator STEAM</span>
+          <span class="activity-tag">🖨️ Imprimare 3D</span>
+          <span class="activity-tag">💻 Coding pentru toți</span>
+          <span class="activity-tag">♟️ Joc educațional</span>
+        </div>
+        <p class="day-desc">Laboratorul 3D și atelierele STEAM au demonstrat cum tehnologia modernă poate fi accesibilă tuturor elevilor, indiferent de capacitățile lor. Imprimarea 3D ca instrument terapeutic și educațional.</p>
+      </div>
+    </div>
+
+    <div class="day-entry" data-delay="2">
+      <div class="day-pin">
+        <div class="pin-circle">Mi</div>
+        <div class="pin-day-label">MIERCURI</div>
+      </div>
+      <div class="day-content">
+        <div class="day-header">
+          <div class="day-title">Atelierul Nutella & Ferma de Lapte</div>
+          <div class="day-date">25 FEB 2026</div>
+        </div>
+        <div class="day-activities">
+          <span class="activity-tag">🍫 Atelier Nutella</span>
+          <span class="activity-tag">🐄 Fermă didactică</span>
+          <span class="activity-tag">🌿 Educație ecologică</span>
+          <span class="activity-tag">👨‍🍳 Cooking lesson</span>
+        </div>
+        <p class="day-desc">Atelierul Nutella a unit elevi din patru țări în jurul unui scop comun — producerea dulciurii cu mâinile proprii. Ferma didactică a completat lecția despre ciclul alimentar și responsabilitate ecologică.</p>
+      </div>
+    </div>
+
+    <div class="day-entry" data-delay="3">
+      <div class="day-pin">
+        <div class="pin-circle">J</div>
+        <div class="pin-day-label">JOI</div>
+      </div>
+      <div class="day-content">
+        <div class="day-header">
+          <div class="day-title">Dialog Intercultural & Primăria</div>
+          <div class="day-date">26 FEB 2026</div>
+        </div>
+        <div class="day-activities">
+          <span class="activity-tag">🏛️ Vizită Primărie</span>
+          <span class="activity-tag">💬 Dialog cultural</span>
+          <span class="activity-tag">📸 Documentare</span>
+          <span class="activity-tag">🎨 Artă comună</span>
+        </div>
+        <p class="day-desc">Întâlnirea cu Primarul orașului și dialogul cu autoritățile locale au evidențiat importanța incluziunii sociale ca politică publică. Schimb de perspective educaționale între profesorii celor patru țări partenere.</p>
+      </div>
+    </div>
+
+    <div class="day-entry" data-delay="4">
+      <div class="day-pin">
+        <div class="pin-circle">V</div>
+        <div class="pin-day-label">VINERI</div>
+      </div>
+      <div class="day-content">
+        <div class="day-header">
+          <div class="day-title">Reflecție, Diplome & La Revedere</div>
+          <div class="day-date">27 FEB 2026</div>
+        </div>
+        <div class="day-activities">
+          <span class="activity-tag">🎓 Diplome Erasmus+</span>
+          <span class="activity-tag">✍️ Reflecții comune</span>
+          <span class="activity-tag">🤗 Schimb de daruri</span>
+          <span class="activity-tag">📋 Planuri viitoare</span>
+        </div>
+        <p class="day-desc">Ceremonia de încheiere cu diplome și reflecții comune a consolidat angajamentul pentru continuarea colaborării. Planuri concrete pentru un proiect comun de incluziune digitală în 2026–2027.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ COMPARISON ══ -->
+<section class="compare-section">
+  <div class="section-label">03 · SISTEME EDUCAȚIONALE</div>
+  <h2 class="section-title">Două viziuni,<br>un scop comun</h2>
+
+  <div class="compare-grid">
+    <div class="compare-col ro">
+      <div>
+        <div class="col-flag">🇷🇴</div>
+        <div class="col-country">România</div>
+      </div>
+      <div class="compare-item">
+        <div class="compare-item-label">ABORDARE PEDAGOGICĂ</div>
+        <div class="compare-item-val">Curriculum național structurat, accent pe cunoștințe teoretice, tranziție spre metode active</div>
+      </div>
+      <div class="compare-item">
+        <div class="compare-item-label">INCLUZIUNE</div>
+        <div class="compare-item-val">Clase integrate, resurse în creștere, provocări de infrastructură în zone rurale</div>
+      </div>
+      <div class="compare-item">
+        <div class="compare-item-label">DIGITALIZARE</div>
+        <div class="compare-item-val">Platforme naționale (INSAM, Manuale digitale), integrare progresivă a tehnologiei</div>
+      </div>
+      <div class="compare-item">
+        <div class="compare-item-label">PUNCTE FORTE</div>
+        <div class="compare-item-val">Tradiție matematică, rezultate olimpiade internaționale, comunitate școlară solidară</div>
+      </div>
+    </div>
+
+    <div class="compare-center">
+      <div class="vs-line"></div>
+      <div class="vs-badge">COMPARAȚIE</div>
+      <div class="vs-line"></div>
+    </div>
+
+    <div class="compare-col it">
+      <div>
+        <div class="col-flag">🇮🇹</div>
+        <div class="col-country">Italia</div>
+      </div>
+      <div class="compare-item">
+        <div class="compare-item-label">ABORDARE PEDAGOGICĂ</div>
+        <div class="compare-item-val">Învățare prin proiecte, personalizare individuală, accent pe autonomie și creativitate</div>
+      </div>
+      <div class="compare-item">
+        <div class="compare-item-label">INCLUZIUNE</div>
+        <div class="compare-item-val">Model de incluziune și diversitate, accent pe colaborare între elevi, integrare activă în viața comunității locale</div>
+      </div>
+      <div class="compare-item">
+        <div class="compare-item-label">DIGITALIZARE</div>
+        <div class="compare-item-val">Laboratoare 3D, robotică terapeutică, tehnologie asistivă integrată în curriculum</div>
+      </div>
+      <div class="compare-item">
+        <div class="compare-item-label">PUNCTE FORTE</div>
+        <div class="compare-item-val">Incluziune exemplară, artă și muzică integrate, legătură puternică școală-comunitate-primărie</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ COMPETENCIES ══ -->
+<section class="competencies-section">
+  <div class="section-label">04 · COMPETENȚE DOBÂNDITE</div>
+  <h2 class="section-title">Ce am adus<br>acasă</h2>
+
+  <div class="comp-layout">
+    <div class="radar-wrap">
+      <svg id="radarChart" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="radarFill" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#e8b84b" stop-opacity="0.3"/>
+            <stop offset="100%" stop-color="#1a7a6e" stop-opacity="0.1"/>
+          </radialGradient>
+        </defs>
+        <!-- Radar grid -->
+        <g transform="translate(150,150)" stroke="rgba(255,255,255,0.07)" stroke-width="1" fill="none">
+          <polygon points="0,-100 86.6,-50 86.6,50 0,100 -86.6,50 -86.6,-50"/>
+          <polygon points="0,-75 64.95,-37.5 64.95,37.5 0,75 -64.95,37.5 -64.95,-37.5"/>
+          <polygon points="0,-50 43.3,-25 43.3,25 0,50 -43.3,25 -43.3,-25"/>
+          <polygon points="0,-25 21.65,-12.5 21.65,12.5 0,25 -21.65,12.5 -21.65,-12.5"/>
+          <line x1="0" y1="-100" x2="0" y2="100"/>
+          <line x1="86.6" y1="-50" x2="-86.6" y2="50"/>
+          <line x1="86.6" y1="50" x2="-86.6" y2="-50"/>
+        </g>
+        <!-- Data polygon — animated -->
+        <polygon id="radarData" transform="translate(150,150)"
+          points="0,-88 78,-40 70,42 0,82 -65,38 -68,-44"
+          fill="url(#radarFill)"
+          stroke="#e8b84b"
+          stroke-width="2"
+          stroke-linejoin="round"
+          opacity="0"
+          style="transition: opacity 0.8s ease;"/>
+        <!-- Labels -->
+        <g font-family="'DM Mono', monospace" font-size="9" fill="rgba(255,255,255,0.45)" text-anchor="middle">
+          <text x="150" y="38">PEDAGOGIC</text>
+          <text x="248" y="103">INTERCULTURAL</text>
+          <text x="240" y="220">DIGITAL</text>
+          <text x="150" y="272">LINGVISTIC</text>
+          <text x="58" y="220">COLABORARE</text>
+          <text x="50" y="103">INCLUZIUNE</text>
+        </g>
+        <!-- Data points -->
+        <g id="radarDots" transform="translate(150,150)" opacity="0" style="transition: opacity 0.5s 0.8s ease;">
+          <circle cx="0" cy="-88" r="4" fill="#e8b84b"/>
+          <circle cx="78" cy="-40" r="4" fill="#e8b84b"/>
+          <circle cx="70" cy="42" r="4" fill="#e8b84b"/>
+          <circle cx="0" cy="82" r="4" fill="#e8b84b"/>
+          <circle cx="-65" cy="38" r="4" fill="#e8b84b"/>
+          <circle cx="-68" cy="-44" r="4" fill="#e8b84b"/>
+        </g>
+      </svg>
+    </div>
+
+    <div class="comp-list">
+      <div class="comp-item" data-delay="0">
+        <div class="comp-header">
+          <span class="comp-name">Competențe pedagogice</span>
+          <span class="comp-score">88%</span>
+        </div>
+        <div class="comp-bar-bg"><div class="comp-bar-fill" data-width="88"></div></div>
+        <div class="comp-desc">Metode STEAM, învățare diferențiată, proiecte interdisciplinare</div>
+      </div>
+      <div class="comp-item" data-delay="1">
+        <div class="comp-header">
+          <span class="comp-name">Competențe interculturale</span>
+          <span class="comp-score">92%</span>
+        </div>
+        <div class="comp-bar-bg"><div class="comp-bar-fill" data-width="92"></div></div>
+        <div class="comp-desc">Dialog european, respect pentru diversitate, parteneriate durabile</div>
+      </div>
+      <div class="comp-item" data-delay="2">
+        <div class="comp-header">
+          <span class="comp-name">Competențe digitale</span>
+          <span class="comp-score">78%</span>
+        </div>
+        <div class="comp-bar-bg"><div class="comp-bar-fill" data-width="78"></div></div>
+        <div class="comp-desc">Imprimare 3D, platforme collaborative, tehnologie asistivă</div>
+      </div>
+      <div class="comp-item" data-delay="3">
+        <div class="comp-header">
+          <span class="comp-name">Incluziune & accesibilitate</span>
+          <span class="comp-score">95%</span>
+        </div>
+        <div class="comp-bar-bg"><div class="comp-bar-fill" data-width="95"></div></div>
+        <div class="comp-desc">Modele de bune practici pentru educație incluzivă și diversitate în clasă</div>
+      </div>
+      <div class="comp-item" data-delay="4">
+        <div class="comp-header">
+          <span class="comp-name">Colaborare europeană</span>
+          <span class="comp-score">90%</span>
+        </div>
+        <div class="comp-bar-bg"><div class="comp-bar-fill" data-width="90"></div></div>
+        <div class="comp-desc">Rețea de parteneri activi în România, Italia, Franța, Spania</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ IMPACT ══ -->
+<section class="impact-section">
+  <div class="section-label">05 · IMPACT</div>
+  <h2 class="section-title">Cine beneficiază<br>și cum</h2>
+
+  <div class="impact-grid">
+    <div class="impact-card gold" data-delay="0">
+      <div class="impact-icon">🎒</div>
+      <div class="impact-audience">ELEVI · ȘCOALA CUZA BRĂILA</div>
+      <div class="impact-title">Lecții vii, dincolo de manuale</div>
+      <div class="impact-text">Profesorii revin cu metode noi, materiale digitale și o perspectivă europeană care se transferă direct în clasă. Elevii beneficiază de lecții STEAM, ateliere creative și modele de incluziune.</div>
+      <div class="impact-metric">
+        <span class="metric-num">3</span>
+        <span class="metric-label">profesoare · cunoștințe transferate direct la elevi</span>
+      </div>
+    </div>
+
+    <div class="impact-card teal" data-delay="1">
+      <div class="impact-icon">🏫</div>
+      <div class="impact-audience">INSTITUȚIE · COMUNITATE</div>
+      <div class="impact-title">Școala ca centru european</div>
+      <div class="impact-text">Școala "Alexandru Ioan Cuza" se poziționează ca instituție cu deschidere europeană. Comunitatea locală din Brăila descoperă modele internaționale de educație incluzivă și inovare pedagogică.</div>
+      <div class="impact-metric">
+        <span class="metric-num">4</span>
+        <span class="metric-label">țări · rețea activă de colaborare educațională</span>
+      </div>
+    </div>
+
+    <div class="impact-card red" data-delay="2">
+      <div class="impact-icon">🌍</div>
+      <div class="impact-audience">COMISIA ERASMUS+ · EVALUATORI</div>
+      <div class="impact-title">Rezultate măsurabile, impact documentat</div>
+      <div class="impact-text">Mobilitatea a generat competențe certificate Europass, planuri de diseminare concrete și un parteneriat activ pentru proiecte viitoare KA2. Toate obiectivele programului au fost atinse și depășite.</div>
+      <div class="impact-metric">
+        <span class="metric-num">100%</span>
+        <span class="metric-label">obiective atinse · raport final complet</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ QUOTES ══ -->
+<section class="quotes-section">
+  <div class="section-label" style="margin-bottom:32px;">06 · VOCI DIN MOBILITATE</div>
+  <div style="overflow: hidden; margin: 0 -40px; padding: 0 0 20px;">
+    <div class="quotes-track" id="quotesTrack">
+      <!-- Set 1 -->
+      <div class="quote-card">
+        <div class="quote-text">"O săptămână în Italia ne-a arătat că educația autentică nu are granițe — are doar deschidere, curiozitate și dorința de a învăța împreună."</div>
+        <div class="quote-author">CORINA DAN · PROFESOR BRĂILA</div>
+      </div>
+      <div class="quote-card">
+        <div class="quote-text">"La scuola non è solo un edificio. È una comunità che include, che crea, che sogna insieme."</div>
+        <div class="quote-author">PAOLA GIORDANO · ISTITUTO SAMMY BASSO</div>
+      </div>
+      <div class="quote-card">
+        <div class="quote-text">"Tehnologia 3D nu este un lux — este un instrument de demnitate pentru fiecare elev."</div>
+        <div class="quote-author">DANIELA PETRE · PROFESOR BRĂILA</div>
+      </div>
+      <div class="quote-card">
+        <div class="quote-text">"Erasmus+ nu e un proiect. E o schimbare de mentalitate care începe cu o singură săptămână."</div>
+        <div class="quote-author">GETA VRABIE · PROFESOR BRĂILA</div>
+      </div>
+      <div class="quote-card">
+        <div class="quote-text">"Quando quattro culture si incontrano, nasce qualcosa che nessuna avrebbe potuto creare da sola."</div>
+        <div class="quote-author">PARTENERI EUROPENI · FEB 2026</div>
+      </div>
+      <!-- Set 2 (duplicate for infinite scroll) -->
+      <div class="quote-card">
+        <div class="quote-text">"O săptămână în Italia ne-a arătat că educația autentică nu are granițe — are doar deschidere, curiozitate și dorința de a învăța împreună."</div>
+        <div class="quote-author">CORINA DAN · PROFESOR BRĂILA</div>
+      </div>
+      <div class="quote-card">
+        <div class="quote-text">"La scuola non è solo un edificio. È una comunità che include, che crea, che sogna insieme."</div>
+        <div class="quote-author">PAOLA GIORDANO · ISTITUTO SAMMY BASSO</div>
+      </div>
+      <div class="quote-card">
+        <div class="quote-text">"Tehnologia 3D nu este un lux — este un instrument de demnitate pentru fiecare elev."</div>
+        <div class="quote-author">DANIELA PETRE · PROFESOR BRĂILA</div>
+      </div>
+      <div class="quote-card">
+        <div class="quote-text">"Erasmus+ nu e un proiect. E o schimbare de mentalitate care începe cu o singură săptămână."</div>
+        <div class="quote-author">GETA VRABIE · PROFESOR BRĂILA</div>
+      </div>
+      <div class="quote-card">
+        <div class="quote-text">"Quando quattro culture si incontrano, nasce qualcosa che nessuna avrebbe potuto creare da sola."</div>
+        <div class="quote-author">PARTENERI EUROPENI · FEB 2026</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer class="footer">
+  <div class="footer-logos">
+    <div class="footer-logo-item">
+      <div class="footer-logo-flag">🏫</div>
+      <div class="footer-logo-name">Șc. "Alexandru Ioan Cuza" Brăila</div>
+    </div>
+    <div class="footer-sep"></div>
+    <div class="footer-logo-item">
+      <div class="footer-logo-flag">🇪🇺</div>
+      <div class="footer-logo-name">Erasmus+ KA120-SCH</div>
+    </div>
+    <div class="footer-sep"></div>
+    <div class="footer-logo-item">
+      <div class="footer-logo-flag">🏛️</div>
+      <div class="footer-logo-name">Istituto Sammy Basso Montenero di Bisaccia</div>
+    </div>
+  </div>
+  <div style="display:flex; justify-content:center; gap:24px; margin-bottom:20px; flex-wrap:wrap;">
+    <span style="font-size:11px; opacity:0.3; font-family:'DM Mono',monospace;">🇷🇴 ROMÂNIA</span>
+    <span style="font-size:11px; opacity:0.3; font-family:'DM Mono',monospace;">🇮🇹 ITALIA</span>
+    <span style="font-size:11px; opacity:0.3; font-family:'DM Mono',monospace;">🇫🇷 FRANȚA</span>
+    <span style="font-size:11px; opacity:0.3; font-family:'DM Mono',monospace;">🇪🇸 SPANIA</span>
+  </div>
+  <p class="footer-program">ERASMUS+ · MOBILITATE INDIVIDUALĂ · 23–27 FEBRUARIE 2026</p>
+</footer>
+
+<script>
+// ══ INTERSECTION OBSERVER — animate on scroll ══
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, idx) => {
+    if (entry.isIntersecting) {
+      const el = entry.target;
+      const delay = (el.dataset.delay || 0) * 120;
+      setTimeout(() => {
+        el.classList.add('visible');
+        // Animate bar fills
+        el.querySelectorAll('.comp-bar-fill').forEach(bar => {
+          bar.style.width = bar.dataset.width + '%';
+        });
+      }, delay);
+      observer.unobserve(el);
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.day-entry, .comp-item, .impact-card').forEach(el => {
+  observer.observe(el);
+});
+
+// ══ RADAR — animate on scroll ══
+const radarObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      document.getElementById('radarData').style.opacity = '1';
+      document.getElementById('radarDots').style.opacity = '1';
+      // Animate bars inside competencies section
+      document.querySelectorAll('.comp-bar-fill').forEach(bar => {
+        bar.style.width = bar.dataset.width + '%';
+      });
+      radarObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.3 });
+
+const radarEl = document.querySelector('.radar-wrap');
+if (radarEl) radarObserver.observe(radarEl);
+
+// ══ SMOOTH COUNTER for hero stats ══
+function animateCounter(el, target, suffix) {
+  let start = 0;
+  const dur = 1800;
+  const step = (timestamp) => {
+    if (!start) start = timestamp;
+    const progress = Math.min((timestamp - start) / dur, 1);
+    const val = Math.floor(progress * target);
+    el.textContent = val + suffix;
+    if (progress < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
+// Run after load
+window.addEventListener('load', () => {
+  // No numeric animation for ∞, just the numbers
+});
+</script>
+
+</body>
+</html>
