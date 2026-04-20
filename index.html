@@ -1794,21 +1794,29 @@ function hvInsertPhotoUrl(url, caption) {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-  hvLoadFixed();
+  // NU încărca pozele la start — inserează-le LAZY când galeria devine vizibilă
+  let galleryLoaded = false;
 
-  // Pornește autoplay doar când galeria intră în viewport
   const galleryObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      if (entry.isIntersecting && HV.photos.length && !HV.playing) {
-        hvPlay();
-      } else if (!entry.isIntersecting && HV.playing) {
+      if (entry.isIntersecting) {
+        // Prima oară când galeria apare în viewport — încarcă pozele
+        if (!galleryLoaded) {
+          galleryLoaded = true;
+          hvLoadFixed();
+          setTimeout(() => { if (HV.photos.length) hvPlay(); }, 400);
+        } else if (!HV.playing) {
+          hvPlay();
+        }
+      } else if (HV.playing) {
         hvPause(); // Oprește când iese din viewport
       }
     });
-  }, { threshold: 0.3 });
+  }, { threshold: 0.2 });
 
-  const slideshow = document.getElementById('hvSlideshow');
-  if (slideshow) galleryObserver.observe(slideshow);
+  // Observă secțiunea galerie (nu slideshow-ul care e ascuns inițial)
+  const galSection = document.querySelector('.gallery-section');
+  if (galSection) galleryObserver.observe(galSection);
 });
 
 </script>
