@@ -725,6 +725,224 @@
     .impact-grid { grid-template-columns: 1fr; }
     .day-entry { grid-template-columns: 60px 1fr; gap: 16px; }
   }
+
+  /* ══ GALERIE FOTO ══ */
+  .gallery-section {
+    position: relative;
+    z-index: 1;
+    padding: 80px 40px;
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+
+  .gallery-upload-zone {
+    border: 2px dashed rgba(232,184,75,0.3);
+    border-radius: 20px;
+    padding: 36px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: rgba(232,184,75,0.03);
+    margin-bottom: 32px;
+    position: relative;
+  }
+  .gallery-upload-zone:hover {
+    border-color: rgba(232,184,75,0.6);
+    background: rgba(232,184,75,0.06);
+  }
+  .gallery-upload-zone input {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+  }
+  .upload-icon { font-size: 36px; margin-bottom: 12px; }
+  .upload-text {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    opacity: 0.7;
+  }
+  .upload-hint {
+    font-size: 12px;
+    opacity: 0.35;
+    margin-top: 6px;
+  }
+
+  /* Slideshow stage */
+  .hv-slideshow {
+    display: none;
+    flex-direction: column;
+    background: rgba(0,0,0,0.4);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+  }
+  .hv-slideshow.active { display: flex; }
+
+  .hv-stage {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    background: #000;
+    overflow: hidden;
+  }
+
+  .hv-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+    cursor: zoom-in;
+  }
+  .hv-img.active { opacity: 1; }
+
+  /* Overlay caption */
+  .hv-caption {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 20px 24px 16px;
+    background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 1.5px;
+    color: rgba(255,255,255,0.5);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .hv-stage:hover .hv-caption { opacity: 1; }
+
+  /* Arrows */
+  .hv-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.55);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: #fff;
+    font-size: 22px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 10;
+    transition: background 0.2s, border-color 0.2s;
+    user-select: none;
+  }
+  .hv-arrow:hover { background: rgba(232,184,75,0.3); border-color: var(--gold); }
+  .hv-arrow.prev { left: 16px; }
+  .hv-arrow.next { right: 16px; }
+
+  /* Controls bar */
+  .hv-controls {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 20px;
+    background: rgba(0,0,0,0.5);
+    border-top: 1px solid rgba(255,255,255,0.06);
+    flex-wrap: wrap;
+  }
+
+  .hv-play-btn {
+    background: rgba(232,184,75,0.12);
+    border: 1px solid rgba(232,184,75,0.3);
+    color: var(--gold);
+    border-radius: 8px;
+    padding: 6px 16px;
+    font-size: 12px;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: background 0.2s;
+    white-space: nowrap;
+  }
+  .hv-play-btn:hover { background: rgba(232,184,75,0.25); }
+
+  .hv-dots {
+    display: flex;
+    gap: 6px;
+    flex: 1;
+    flex-wrap: wrap;
+  }
+  .hv-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.18);
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+    flex-shrink: 0;
+  }
+  .hv-dot.active { background: var(--gold); transform: scale(1.35); }
+
+  .hv-counter {
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    color: rgba(255,255,255,0.35);
+    white-space: nowrap;
+  }
+
+  /* Thumbnails strip */
+  .hv-thumbs {
+    display: flex;
+    gap: 6px;
+    padding: 10px 14px;
+    overflow-x: auto;
+    background: rgba(0,0,0,0.35);
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,0.1) transparent;
+  }
+  .hv-thumb {
+    width: 72px; height: 50px;
+    border-radius: 6px;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 2px solid rgba(255,255,255,0.08);
+    cursor: pointer;
+    transition: border-color 0.2s, transform 0.15s;
+  }
+  .hv-thumb:hover { border-color: rgba(232,184,75,0.5); transform: scale(1.05); }
+  .hv-thumb.active { border-color: var(--gold); }
+
+  /* Lightbox */
+  .hv-lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.95);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+  }
+  .hv-lightbox.open { display: flex; }
+  .hv-lightbox img {
+    max-width: 92vw;
+    max-height: 92vh;
+    border-radius: 8px;
+    object-fit: contain;
+  }
+  .hv-lb-close {
+    position: absolute;
+    top: 24px; right: 32px;
+    font-size: 36px;
+    color: rgba(255,255,255,0.6);
+    cursor: pointer;
+    background: none;
+    border: none;
+    line-height: 1;
+    transition: color 0.2s;
+  }
+  .hv-lb-close:hover { color: var(--gold); }
+
+  @media (max-width: 900px) {
+    .hv-stage { height: 280px; }
+  }
+
 </style>
 </head>
 <body>
@@ -1229,6 +1447,43 @@
   </div>
 </section>
 
+
+<!-- ══ GALERIE FOTO ══ -->
+<section class="gallery-section">
+  <div class="section-label">07 · GALERIE FOTO</div>
+  <h2 class="section-title">Momente surprinse<br>din mobilitate</h2>
+
+  <!-- Upload zone -->
+  <div class="gallery-upload-zone" onclick="document.getElementById('hvFileInput').click()">
+    <input type="file" id="hvFileInput" accept="image/*" multiple
+           onchange="hvAddPhotos(this)" style="display:none;" onclick="event.stopPropagation()">
+    <div class="upload-icon">📷</div>
+    <div class="upload-text">ADAUGĂ FOTOGRAFII</div>
+    <div class="upload-hint">Click sau trage pozele aici · JPG, PNG, WEBP · multiple fișiere</div>
+  </div>
+
+  <!-- Slideshow (ascuns până la prima poză) -->
+  <div class="hv-slideshow" id="hvSlideshow">
+    <div class="hv-stage" id="hvStage">
+      <button class="hv-arrow prev" onclick="hvPrev()">&#8249;</button>
+      <button class="hv-arrow next" onclick="hvNext()">&#8250;</button>
+      <div class="hv-caption" id="hvCaption"></div>
+    </div>
+    <div class="hv-controls">
+      <button class="hv-play-btn" id="hvPlayBtn" onclick="hvTogglePlay()">⏵ Redare automată</button>
+      <div class="hv-dots" id="hvDots"></div>
+      <span class="hv-counter" id="hvCounter">0 / 0</span>
+    </div>
+    <div class="hv-thumbs" id="hvThumbs"></div>
+  </div>
+</section>
+
+<!-- Lightbox galerie -->
+<div class="hv-lightbox" id="hvLightbox">
+  <button class="hv-lb-close" onclick="hvCloseLightbox()">✕</button>
+  <img id="hvLightboxImg" src="" alt="">
+</div>
+
 <!-- ══ FOOTER ══ -->
 <footer class="footer">
   <div class="footer-logos">
@@ -1315,6 +1570,171 @@ function animateCounter(el, target, suffix) {
 window.addEventListener('load', () => {
   // No numeric animation for ∞, just the numbers
 });
+
+// ══════════════════════════════════════════════
+// GALERIE FOTO — Slideshow automat cu persistență
+// ══════════════════════════════════════════════
+const HV = {
+  photos: [],
+  current: 0,
+  playing: false,
+  timer: null,
+  interval: 3800
+};
+
+function hvAddPhotos(input) {
+  if (!input.files) return;
+  Array.from(input.files).forEach(file => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      hvInsertPhoto(e.target.result, file.name);
+      hvSaveGallery();
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function hvInsertPhoto(src, name) {
+  const stage  = document.getElementById('hvStage');
+  const thumbs = document.getElementById('hvThumbs');
+  const dots   = document.getElementById('hvDots');
+  const show   = document.getElementById('hvSlideshow');
+
+  // Imagine principală
+  const img = document.createElement('img');
+  img.src = src;
+  img.className = 'hv-img';
+  img.onclick = () => hvOpenLightbox(src);
+  // Insert before arrows (first children)
+  stage.insertBefore(img, stage.querySelector('.hv-arrow.prev'));
+
+  // Miniatură
+  const thumb = document.createElement('img');
+  thumb.src = src;
+  thumb.className = 'hv-thumb';
+  const idx = HV.photos.length;
+  thumb.onclick = () => { hvGoTo(idx); hvResetTimer(); };
+  thumbs.appendChild(thumb);
+
+  // Dot
+  const dot = document.createElement('div');
+  dot.className = 'hv-dot';
+  dot.onclick = () => { hvGoTo(idx); hvResetTimer(); };
+  dots.appendChild(dot);
+
+  HV.photos.push({ src, name: name || ('foto-' + (idx+1)), img, thumb, dot });
+
+  // Activează slideshow la prima poză
+  show.classList.add('active');
+
+  if (HV.photos.length === 1) {
+    hvGoTo(0);
+    hvPlay();
+  }
+  hvUpdateCounter();
+}
+
+function hvGoTo(idx) {
+  if (!HV.photos.length) return;
+  idx = ((idx % HV.photos.length) + HV.photos.length) % HV.photos.length;
+
+  const prev = HV.photos[HV.current];
+  if (prev) {
+    prev.img.classList.remove('active');
+    prev.thumb.classList.remove('active');
+    prev.dot.classList.remove('active');
+  }
+
+  HV.current = idx;
+  const cur = HV.photos[idx];
+  cur.img.classList.add('active');
+  cur.thumb.classList.add('active');
+  cur.dot.classList.add('active');
+  cur.thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+
+  // Caption
+  const cap = document.getElementById('hvCaption');
+  if (cap) cap.textContent = (idx + 1) + ' / ' + HV.photos.length + '  ·  ' + cur.name.replace(/\.[^.]+$/, '');
+
+  hvUpdateCounter();
+}
+
+function hvNext() { hvGoTo(HV.current + 1); hvResetTimer(); }
+function hvPrev() { hvGoTo(HV.current - 1); hvResetTimer(); }
+
+function hvPlay() {
+  HV.playing = true;
+  const btn = document.getElementById('hvPlayBtn');
+  if (btn) btn.textContent = '⏸ Pauză';
+  HV.timer = setInterval(() => hvGoTo(HV.current + 1), HV.interval);
+}
+
+function hvPause() {
+  HV.playing = false;
+  const btn = document.getElementById('hvPlayBtn');
+  if (btn) btn.textContent = '⏵ Redare automată';
+  clearInterval(HV.timer);
+}
+
+function hvTogglePlay() { HV.playing ? hvPause() : hvPlay(); }
+
+function hvResetTimer() {
+  if (HV.playing) { clearInterval(HV.timer); HV.timer = setInterval(() => hvGoTo(HV.current + 1), HV.interval); }
+}
+
+function hvUpdateCounter() {
+  const el = document.getElementById('hvCounter');
+  if (el) el.textContent = HV.photos.length ? (HV.current + 1) + ' / ' + HV.photos.length : '0 / 0';
+}
+
+// Lightbox
+function hvOpenLightbox(src) {
+  document.getElementById('hvLightboxImg').src = src;
+  document.getElementById('hvLightbox').classList.add('open');
+  hvPause();
+}
+function hvCloseLightbox() {
+  document.getElementById('hvLightbox').classList.remove('open');
+  if (HV.photos.length) hvPlay();
+}
+document.getElementById('hvLightbox').addEventListener('click', function(e) {
+  if (e.target === this) hvCloseLightbox();
+});
+
+// Tastatură
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('hvSlideshow')?.classList.contains('active')) return;
+  if (document.getElementById('hvLightbox')?.classList.contains('open')) {
+    if (e.key === 'Escape') hvCloseLightbox();
+    return;
+  }
+  if (e.key === 'ArrowRight') hvNext();
+  if (e.key === 'ArrowLeft')  hvPrev();
+  if (e.key === ' ') { e.preventDefault(); hvTogglePlay(); }
+  if (e.key === 'Escape') hvPause();
+});
+
+// Persistență localStorage
+function hvSaveGallery() {
+  try {
+    localStorage.setItem('hv_gallery', JSON.stringify(
+      HV.photos.map(p => ({ src: p.src, name: p.name }))
+    ));
+  } catch(e) {}
+}
+
+function hvRestoreGallery() {
+  try {
+    const saved = JSON.parse(localStorage.getItem('hv_gallery') || '[]');
+    saved.forEach(p => hvInsertPhoto(p.src, p.name));
+    if (saved.length) hvPause(); // nu porni automat la restore
+  } catch(e) {}
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  hvRestoreGallery();
+});
+
 </script>
 
 </body>
