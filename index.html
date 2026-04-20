@@ -789,6 +789,8 @@
     height: 500px;
     background: #000;
     overflow: hidden;
+    overscroll-behavior: none;
+    touch-action: pan-y pinch-zoom;
   }
 
   .hv-img {
@@ -893,9 +895,12 @@
     gap: 6px;
     padding: 10px 14px;
     overflow-x: auto;
+    overflow-y: hidden;
     background: rgba(0,0,0,0.35);
     scrollbar-width: thin;
     scrollbar-color: rgba(255,255,255,0.1) transparent;
+    overscroll-behavior-x: contain;
+    touch-action: pan-x;
   }
   .hv-thumb {
     width: 72px; height: 50px;
@@ -1753,8 +1758,7 @@ function hvLoadFixed() {
   HV_PHOTOS.forEach((name, i) => {
     hvInsertPhotoUrl(name, 'Foto ' + (i + 1) + ' · Montenero di Bisaccia');
   });
-  // Pornește slideshow după ce imaginile încep să se încarce
-  setTimeout(() => { if (HV.photos.length) hvPlay(); }, 300);
+  // Slideshow pornește doar când galeria devine vizibilă în viewport
 }
 
 function hvInsertPhotoUrl(url, caption) {
@@ -1785,12 +1789,26 @@ function hvInsertPhotoUrl(url, caption) {
 
   HV.photos.push({ src: url, name: caption || url, img, thumb, dot });
   show.classList.add('active');
-  if (HV.photos.length === 1) hvGoTo(0);
+  if (HV.photos.length === 1) hvGoTo(0); // doar afișează prima poză, fără autoplay
   hvUpdateCounter();
 }
 
 window.addEventListener('DOMContentLoaded', () => {
   hvLoadFixed();
+
+  // Pornește autoplay doar când galeria intră în viewport
+  const galleryObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && HV.photos.length && !HV.playing) {
+        hvPlay();
+      } else if (!entry.isIntersecting && HV.playing) {
+        hvPause(); // Oprește când iese din viewport
+      }
+    });
+  }, { threshold: 0.3 });
+
+  const slideshow = document.getElementById('hvSlideshow');
+  if (slideshow) galleryObserver.observe(slideshow);
 });
 
 </script>
